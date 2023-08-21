@@ -5,6 +5,9 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-image: url(Images/background\ image.avif);
+  background-position: center center;
+  background-size: cover; 
 }
 
 code {

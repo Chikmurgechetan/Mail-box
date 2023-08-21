@@ -1,58 +1,75 @@
-/* SIngUp.css */
 
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-  }
-  
-  .style {
-    border: 1px solid black;
-    padding: 15px 40px;
-    border-radius: 10px;
-    background-color: aliceblue;
-    box-shadow: 1px 2px 1px 2px blanchedalmonds;
-    margin-bottom: 10px;
-  }
-  
-  .container h3 {
-    color: blue;
-    text-align: center;
-    margin-bottom: 1.5rem; /* Add some space below the heading */
-  }
-  
-  .form-container {
-    width: 100%;
-    max-width: 400px;
-    padding-bottom: 10px;
-  }
-  
-  .form-group {
-    margin-bottom: 1.5rem;
-  }
-  
-  .form-label {
-    font-weight: bold;
-  }
-  
- 
-  .btn-dark {
-    width: 100%;
-    margin-bottom: 10px;
-    margin-top: 5px;
-  }
-  
-  p {
-    text-align: center;
-    margin-top: 15px;
-  }
-  
-  .loginbtn {
-    border: none;
-    background-color: transparent; /* Set background to transparent */
-    cursor: pointer;
-    text-decoration: underline;
-  }
-  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* Style for the form container */
+.style {
+  width: 300px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #a49e9e;
+}
+
+/* Style for the form header */
+.style h3 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Style for the input fields */
+.style label {
+  font-weight: bold;
+}
+
+.style input[type="email"],
+.style input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #0c0c0c;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+/* Style for the submit button */
+.style button[type="submit"] {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #343a40;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* Style for the "Forgot Password" link */
+.link {
+  display: block;
+  margin-top: 10px;
+  text-align: center;
+  color: black;
+}
+.link:hover{
+color: red;
+}
+/* Style for the "Don't Have an Account?" button */
+.style .singBtn {
+  display: block;
+  width: 100%;
+  margin-top: 20px;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #fff;
+  color: black;
+  font-size: 14px;
+  cursor: pointer;
+  text-align: center;
+}

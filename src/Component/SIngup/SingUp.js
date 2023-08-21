@@ -1,50 +1,85 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "./SIngUp.css";
 
 import { Container, Button, Form } from "react-bootstrap";
+import { AuthoContext } from "../store/AuthoContext";
+import { useNavigate } from "react-router";
 
-const singupData = (singdata) => {
-  fetch(
-    "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBryqUWKnwugdGDCAlYbo_fdEvZTV0CxlY",
-    {
-      method: "POST",
-      body: JSON.stringify(singdata),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  )
-    .then((reponse) => {
-      console.log(reponse);
-    })
-    .catch((error) => {
-      alert(error);
-    });
-};
+// const singupData = (singdata) => {
+//   fetch(
+//     "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBryqUWKnwugdGDCAlYbo_fdEvZTV0CxlY",
+//     {
+//       method: "POST",
+//       body: JSON.stringify(singdata),
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//     }
+//   )
+//     .then((reponse) => {
+//       console.log(reponse);
+//     })
+//     .catch((error) => {
+//       alert(error);
+//     });
+// };
 
 const SingUp = () => {
+  const ctx = useContext(AuthoContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [conformPassword, setConformPassword] = useState("");
+  const [isLogin, setIsLogine] = useState(true);
+  const navigate = useNavigate();
 
-  const submitSinguupHandler = (event) => {
+  const switchHandler = () => {
+    setIsLogine((prevState) => !prevState);
+  };
+
+  const submitSinguupHandler = async (event) => {
     event.preventDefault();
     console.log(email, password, conformPassword);
 
-    if (password === conformPassword) {
-      singupData({
-        email: email,
-        password: password,
-        returnSecureToken: true,
-      });
-      setEmail("");
-      setPassword("");
-      setConformPassword("");
-      console.log(" User has successfully signed up");
-    } else {
-      alert("password mismatch");
+    if (!isLogin && password !== conformPassword) {
+      alert("Confirmation password does not match");
+      return;
     }
-   
+
+    let url =
+      "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBryqUWKnwugdGDCAlYbo_fdEvZTV0CxlY";
+
+    if (isLogin) {
+      url =
+        "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBryqUWKnwugdGDCAlYbo_fdEvZTV0CxlY";
+    }
+
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        body: JSON.stringify({
+          email: email,
+          password: password,
+          returnSecureToken: true,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
+
+      if (data.error) {
+        alert(data.error.message);
+      } else {
+        if (isLogin) {
+          ctx.setIdToken(data.idToken);
+          navigate("/home");
+        }
+        setIsLogine(true);
+      }
+      console.log(data);
+    } catch (error) {
+      alert("An error occurred. Please try again.");
+    }
   };
 
   const changeEmail = (event) => {
@@ -62,7 +97,7 @@ const SingUp = () => {
   return (
     <Container className="container">
       <div className="style">
-        <h3>SingUp</h3>
+        <h3>{isLogin ? "Login" : "SingUp"}</h3>
         <Form onSubmit={submitSinguupHandler}>
           <Form.Group controlId="FormBasicEmail">
             <Form.Label>Email</Form.Label>
@@ -82,24 +117,33 @@ const SingUp = () => {
               required
             />
           </Form.Group>
-          <Form.Group controlId="FormBasicConfomPassword">
-            <Form.Label>Conform Possword</Form.Label>
-            <Form.Control
-              type="conformPassword"
-              value={conformPassword}
-              onChange={changeConformPass}
-              required
-            />
-          </Form.Group>
+          {!isLogin && (
+            <Form.Group controlId="FormBasicConfomPassword">
+              <Form.Label>Conform Possword</Form.Label>
+              <Form.Control
+                type="password"
+                value={conformPassword}
+                onChange={changeConformPass}
+                required
+              />
+            </Form.Group>
+          )}
           <Button variant="dark" type="submit">
-            SingUp
+            {isLogin ? "Login" : "SingUp"}
           </Button>
         </Form>
-
-        <p>
-          Have an account?
-          <Button variant="outline-primary">Login</Button>
-        </p>
+        {isLogin && (
+          <a href="/forgot-password" className="link">
+            Forgot Password
+          </a>
+        )}
+        <Button
+          variant="outline-primary"
+          className="singBtn"
+          onClick={switchHandler}
+        >
+          {isLogin ? "Don't Have an Account? Sign Up" : "Login"}
+        </Button>
       </div>
     </Container>
   );
