@@ -4,6 +4,8 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { Editor } from "react-draft-wysiwyg";
 import { EditorState } from "draft-js";
 import { Button, Form } from "react-bootstrap";
+import MailOutlineIcon from '@mui/icons-material/MailOutline';
+import Header from "./Header";
 
 const Home = () => {
   const [recemail, setRecEmail] = useState("");
@@ -68,17 +70,20 @@ const Home = () => {
   };
   return (
     <div className="home-container">
-      <h2>Welcome to Mail Box</h2>
+     <Header/>
+      <h2 className="Hed">Welcome to Mail Box</h2>
       <div className="email-form">
         <Form onSubmit={submitSendHandler}>
           <Form.Group>
-            <Form.Label htmlFor="to">To</Form.Label>
+            <Form.Label htmlFor="to">To < MailOutlineIcon/></Form.Label>
             <Form.Control
               type="email"
               id="to"
               value={recemail}
               onChange={onEmailStateChange}
+              placeholder="charan@gmail.com"
               required
+
             />
           </Form.Group>
 
@@ -95,12 +100,14 @@ const Home = () => {
 
           <Form.Group>
             <Form.Label> Write Mail</Form.Label>
-            <Editor
+            <Editor 
               editorState={editorState}
               onEditorStateChange={onEditorStateChange}
+              placeholder="Type here..."
+      
             />
           </Form.Group>
-          <Button className="send-button" type="submit">
+          <Button  variant="dark" type="submit">
             Send
           </Button>
         </Form>

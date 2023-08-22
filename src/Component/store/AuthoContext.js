@@ -22,7 +22,8 @@ const initialToken = localStorage.getItem("idToken");
 
     const logOutHandler = () =>{
         setIdToken(null);
-       localStorage.getItem("idToken");
+       localStorage.removeItem("idToken");
+       localStorage.removeItem("email");
     }
 
     const ctxValue = {
