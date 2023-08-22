@@ -5,25 +5,6 @@ import { Container, Button, Form } from "react-bootstrap";
 import { AuthoContext } from "../store/AuthoContext";
 import { useNavigate } from "react-router";
 
-// const singupData = (singdata) => {
-//   fetch(
-//     "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBryqUWKnwugdGDCAlYbo_fdEvZTV0CxlY",
-//     {
-//       method: "POST",
-//       body: JSON.stringify(singdata),
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//     }
-//   )
-//     .then((reponse) => {
-//       console.log(reponse);
-//     })
-//     .catch((error) => {
-//       alert(error);
-//     });
-// };
-
 const SingUp = () => {
   const ctx = useContext(AuthoContext);
   const [email, setEmail] = useState("");
@@ -39,6 +20,8 @@ const SingUp = () => {
   const submitSinguupHandler = async (event) => {
     event.preventDefault();
     console.log(email, password, conformPassword);
+
+    localStorage.setItem('email',email);
 
     if (!isLogin && password !== conformPassword) {
       alert("Confirmation password does not match");
@@ -84,6 +67,7 @@ const SingUp = () => {
 
   const changeEmail = (event) => {
     setEmail(event.target.value);
+    localStorage.setItem('email',email);
   };
 
   const changePassword = (event) => {
