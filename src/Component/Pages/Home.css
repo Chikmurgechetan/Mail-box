@@ -2,8 +2,9 @@
 
 .home-container {
   max-width: 1000px;
-  margin: 0 auto;
+  margin: 10px 10rem;
   padding: 20px;
+  
 }
 
 .email-form {
@@ -33,3 +34,14 @@
 .editor {
   height: 2rem;
 }
+
+
+.header-container {
+  display: flex;
+  flex: 1;
+}
+
+/* .main-content {
+  flex: 1;
+} */
+
