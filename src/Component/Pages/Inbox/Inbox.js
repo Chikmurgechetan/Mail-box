@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { ListGroup, ListGroupItem } from "react-bootstrap";
 import BlueDot from "./BlueDot";
 import { useNavigate } from "react-router-dom";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 // ... (imports and other code)
 
@@ -14,37 +15,39 @@ const Inbox = () => {
   // Add a state variable to keep track of unread message count
   const [unreadCount, setUnreadCount] = useState(0);
 
-  useEffect(() => {
-    const FeatchItems = async () => {
-      try {
-        const response = await fetch(
-          `https://mail-bo-default-rtdb.firebaseio.com/Send Email/${receiveEmail}.json`
-        );
-        if (response.ok) {
-          const data = await response.json();
-          const fetchedData = [];
-          for (const key in data) {
-            fetchedData.push({
-              id: key,
-              time: data[key].time,
-              subject: data[key].subject,
-              email: data[key].email,
-              visibility: data[key].visibility,
-            });
-          }
-          const unreadMessages = fetchedData.filter((item) => item.visibility);
-          setUnreadCount(unreadMessages.length);
-          setData(fetchedData);
-        } else {
-          throw new Error("Failed to fetch data");
+  const fetchItems = async () => {
+    try {
+      const response = await fetch(
+        `https://mail-bo-default-rtdb.firebaseio.com/Send Email/${receiveEmail}.json`
+      );
+      if (response.ok) {
+        const data = await response.json();
+        const fetchedData = [];
+        for (const key in data) {
+          fetchedData.push({
+            id: key,
+            time: data[key].time,
+            subject: data[key].subject,
+            email: data[key].email,
+            visibility: data[key].visibility,
+          });
         }
-      } catch (error) {
-        console.error("Error fetching data:", error);
+        const unreadMessages = fetchedData.filter((item) => item.visibility);
+        setUnreadCount(unreadMessages.length);
+        setData(fetchedData);
+      } else {
+        throw new Error("Failed to fetch data");
       }
-    };
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
-    FeatchItems(); // Call the function inside the useEffect callback
+  useEffect(() => {
+    fetchItems();
   }, [receiveEmail]);
+
+  // Full read Messaga Function
 
   const openReadPage = async (itemId) => {
     try {
@@ -72,6 +75,26 @@ const Inbox = () => {
     }
   };
 
+  //deleting the mails
+  const deleteMessage = (itemId) => {
+    fetch(
+      `https://mail-bo-default-rtdb.firebaseio.com/Send Email/${receiveEmail}/${itemId}.json`,
+      {
+        method: "DELETE",
+      }
+    )
+      .then((response) => {
+        if (response.ok) {
+          console.log("Data Delete Successfully!");
+          fetchItems();
+          // You can call FeatchItems() here to fetch updated data after deletion
+        }
+      })
+      .catch((error) => {
+        console.log("Error", error);
+      });
+  };
+
   return (
     <div>
       <h2 style={{ margin: "0 20rem" }}>
@@ -96,6 +119,10 @@ const Inbox = () => {
               BY: {item.email}----{item.subject}---------
               {item.time}
             </ListGroupItem>
+            <DeleteIcon 
+              onClick={() => deleteMessage(item.id)}
+              style={{ cursor: "pointer", color: "black" }}
+            />
           </ListGroup>
         ))}
       </div>
