@@ -22,6 +22,7 @@ const Home = () => {
     //console.log(emailContent);
     //console.log(currentTime);
     const MailEmail = email.replace("@", "").replace(".", "");
+    const visibility = true;
 
     fetch(
       `https://mail-bo-default-rtdb.firebaseio.com/Send Email/${MailEmail}.json`,
@@ -32,6 +33,7 @@ const Home = () => {
           subject: subject,
           content: emailContent,
           time: currentTime,
+          visibility:visibility
         }),
         headers: { "Content-Type": "application/json" },
       }
@@ -48,7 +50,9 @@ const Home = () => {
           subject: subject,
           content: emailContent,
           time: currentTime,
+          visibility:visibility
         }),
+
         headers: { "Content-Type": "application/json" },
       }
     );
