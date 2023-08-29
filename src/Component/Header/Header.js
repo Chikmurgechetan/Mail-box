@@ -3,7 +3,8 @@ import { Navbar, Nav, Button } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthoContext } from "../store/AuthoContext";
 import AllInboxIcon from "@mui/icons-material/AllInbox";
-import ForwardRoundedIcon from "@mui/icons-material/ForwardRounded";
+import ForwardRoundedIcon from "@mui/icons-material/ForwardRounded"
+import MailIcon from '@mui/icons-material/Mail';
 
 const Header = () => {
   const ctx = useContext(AuthoContext);
@@ -26,7 +27,7 @@ const Header = () => {
           boxShadow: "1px 1px 1px 1px red",
         }}
       >
-        <Navbar.Brand>Mail Box Client</Navbar.Brand>
+        <Navbar.Brand style={{textDecoration:'underline red'}}><MailIcon/> Mail Box Client <MailIcon/> </Navbar.Brand>
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mx-auto">
             <Link

@@ -12,7 +12,7 @@ const Inbox = () => {
   const navigate = useNavigate();
   const email = localStorage.getItem("email");
   const receiveEmail = email.replace("@", "").replace(".", "");
-  
+
   // Add a state variable to keep track of unread message count
   const [unreadCount, setUnreadCount] = useState(0);
 
@@ -46,11 +46,9 @@ const Inbox = () => {
     }
   };
 
- 
   useEffect(() => {
     fetchItems();
-
-   }, [receiveEmail]);
+  }, [receiveEmail]);
 
   // Full read Messaga Function
 
@@ -65,7 +63,7 @@ const Inbox = () => {
       await fetch(
         `https://mail-bo-default-rtdb.firebaseio.com/receive/${receiveEmail}/${itemId}.json`,
         {
-          method: "PATCH", 
+          method: "PATCH",
           body: JSON.stringify({
             visibility: false,
           }),
@@ -124,7 +122,7 @@ const Inbox = () => {
               BY: {item.email}----{item.subject}---------
               {item.time}
             </ListGroupItem>
-            <DeleteIcon 
+            <DeleteIcon
               onClick={() => deleteMessage(item.id)}
               style={{ cursor: "pointer", color: "black" }}
             />
