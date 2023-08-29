@@ -10,7 +10,7 @@ const ReadMail = () => {
 
   console.log(id);
 
-  const email = localStorage.getItem("toEmail");
+  const email = localStorage.getItem("email");
   const receiveEmail = email.replace("@", "").replace(".", "");
 
   useEffect(() => {

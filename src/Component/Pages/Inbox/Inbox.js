@@ -10,18 +10,21 @@ import DeleteIcon from "@mui/icons-material/Delete";
 const Inbox = () => {
   const [data, setData] = useState([]);
   const navigate = useNavigate();
-  const email = localStorage.getItem("toEmail");
+  const email = localStorage.getItem("email");
   const receiveEmail = email.replace("@", "").replace(".", "");
+  
   // Add a state variable to keep track of unread message count
   const [unreadCount, setUnreadCount] = useState(0);
 
   const fetchItems = async () => {
+    console.log(receiveEmail);
     try {
       const response = await fetch(
         `https://mail-bo-default-rtdb.firebaseio.com/receive/${receiveEmail}.json`
       );
       if (response.ok) {
         const data = await response.json();
+        console.log(data);
         const fetchedData = [];
         for (const key in data) {
           fetchedData.push({
@@ -43,9 +46,11 @@ const Inbox = () => {
     }
   };
 
+ 
   useEffect(() => {
     fetchItems();
-  }, [receiveEmail]);
+
+   }, [receiveEmail]);
 
   // Full read Messaga Function
 
@@ -60,7 +65,7 @@ const Inbox = () => {
       await fetch(
         `https://mail-bo-default-rtdb.firebaseio.com/receive/${receiveEmail}/${itemId}.json`,
         {
-          method: "PATCH", // Use PATCH to update existing data
+          method: "PATCH", 
           body: JSON.stringify({
             visibility: false,
           }),

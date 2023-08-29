@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Button, Container, ListGroup, ListGroupItem } from "react-bootstrap";
-//import { useNavigate } from "react-router";
 import PersonIcon from "@mui/icons-material/Person";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
 const SentMail = () => {
   const [Mail, setMail] = useState([]);
-  // const navigate = useNavigate();
-
   const sendMail = localStorage.getItem("email");
   const senderEmail = sendMail.replace("@", "").replace(".", "");
 
