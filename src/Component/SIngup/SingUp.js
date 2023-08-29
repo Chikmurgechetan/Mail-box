@@ -55,6 +55,7 @@ const SingUp = () => {
       } else {
         if (isLogin) {
           ctx.setIdToken(data.idToken);
+          localStorage.setItem('email',data.email);
           navigate("/home");
         }
         setIsLogine(true);
@@ -67,7 +68,7 @@ const SingUp = () => {
 
   const changeEmail = (event) => {
     setEmail(event.target.value);
-    localStorage.setItem('email',email);
+  
   };
 
   const changePassword = (event) => {

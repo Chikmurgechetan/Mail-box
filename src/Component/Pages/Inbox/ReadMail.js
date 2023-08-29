@@ -1,61 +1,58 @@
 import React, { useEffect, useState } from "react";
-import { Container,Row,Col,Card } from "react-bootstrap";
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { Container, Row, Col, Card } from "react-bootstrap";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useParams } from "react-router";
 
+const ReadMail = () => {
+  const [message, setMessage] = useState({});
+  const param = useParams();
+  const id = param.id;
 
-const ReadMail = () =>{
-const [message,setMessage] = useState({});
-const param = useParams()
-const id = param.id ;
+  console.log(id);
 
-console.log(id)
+  const email = localStorage.getItem("toEmail");
+  const receiveEmail = email.replace("@", "").replace(".", "");
 
-const email = localStorage.getItem('email');
-const receiveEmail = email.replace("@", "").replace(".", "");
+  useEffect(() => {
+    const fethMessage = async () => {
+      try {
+        const response = await fetch(
+          `https://mail-bo-default-rtdb.firebaseio.com/receive/${receiveEmail}/${id}.json`
+        );
+        const data = await response.json();
 
- useEffect(()=>{
-  const fethMessage = async () =>{
-     try{
-      
-    const response = await fetch(`https://mail-bo-default-rtdb.firebaseio.com/Send Email/${receiveEmail}/${id}.json`);
-    const data = await response.json();
- 
-       if(!response.ok){
-        throw new Error(data.error);
-       }
-      setMessage(data)
-      console.log(data);
-     } catch(error){
-      alert(error.message)
-     }
-  } 
-  
-  fethMessage();
+        if (!response.ok) {
+          throw new Error(data.error);
+        }
+        setMessage(data);
+        console.log(data);
+      } catch (error) {
+        alert(error.message);
+      }
+    };
 
- }, [receiveEmail,id])
+    fethMessage();
+  }, [receiveEmail, id]);
 
-
-   
-  
-  return(
+  return (
     <Container>
       <Row>
         <Col>
-          <Card style={{ padding: '40px', margin: '40px' }}>
-            <AccountCircleIcon/>
-            <Card.Header>From: {email}</Card.Header>
+          <Card style={{ padding: "40px", margin: "40px" }}>
+            <AccountCircleIcon />
+            <Card.Title>TO:- {email}</Card.Title>
             {message.subject && (
-                <>
-                 <Card.Title>subject :- {message.subject}</Card.Title>
-                  <Card.Text>content :-   {message.content}</Card.Text>
-                </>
-              )}
+              <>
+                <Card.Title>From :- {message.email}</Card.Title>
+                <Card.Title>subject :- {message.subject}</Card.Title>
+                <Card.Text>content :- {message.content}</Card.Text>
+              </>
+            )}
           </Card>
         </Col>
       </Row>
     </Container>
-  )
+  );
 };
 
 export default ReadMail;

@@ -10,7 +10,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 const Inbox = () => {
   const [data, setData] = useState([]);
   const navigate = useNavigate();
-  const email = localStorage.getItem("email");
+  const email = localStorage.getItem("toEmail");
   const receiveEmail = email.replace("@", "").replace(".", "");
   // Add a state variable to keep track of unread message count
   const [unreadCount, setUnreadCount] = useState(0);
@@ -18,7 +18,7 @@ const Inbox = () => {
   const fetchItems = async () => {
     try {
       const response = await fetch(
-        `https://mail-bo-default-rtdb.firebaseio.com/Send Email/${receiveEmail}.json`
+        `https://mail-bo-default-rtdb.firebaseio.com/receive/${receiveEmail}.json`
       );
       if (response.ok) {
         const data = await response.json();
@@ -58,7 +58,7 @@ const Inbox = () => {
 
       // Update visibility in the Firebase database
       await fetch(
-        `https://mail-bo-default-rtdb.firebaseio.com/Send Email/${receiveEmail}/${itemId}.json`,
+        `https://mail-bo-default-rtdb.firebaseio.com/receive/${receiveEmail}/${itemId}.json`,
         {
           method: "PATCH", // Use PATCH to update existing data
           body: JSON.stringify({
@@ -78,7 +78,7 @@ const Inbox = () => {
   //deleting the mails
   const deleteMessage = (itemId) => {
     fetch(
-      `https://mail-bo-default-rtdb.firebaseio.com/Send Email/${receiveEmail}/${itemId}.json`,
+      `https://mail-bo-default-rtdb.firebaseio.com/receive/${receiveEmail}/${itemId}.json`,
       {
         method: "DELETE",
       }

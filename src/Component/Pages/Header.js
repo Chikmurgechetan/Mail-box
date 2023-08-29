@@ -55,7 +55,7 @@ const Header = () => {
             </Link>
 
             <Link
-              to="*"
+              to="Sent"
               style={{
                 textDecoration: "none",
                 fontSize: "1.4rem",

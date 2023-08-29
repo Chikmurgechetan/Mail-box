@@ -5,64 +5,83 @@ import { Editor } from "react-draft-wysiwyg";
 import { EditorState } from "draft-js";
 import { Button, Form } from "react-bootstrap";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
+import SendIcon from '@mui/icons-material/Send';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; // Don't forget to import the CSS as well
+
 
 
 const Home = () => {
-  const [recemail, setRecEmail] = useState("");
+  const [toEmail, setToEmail] = useState("");
   const [subject, setSubject] = useState("");
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
 
   const email = localStorage.getItem("email");
-  //console.log(email);
 
-  const submitSendHandler = (event) => {
+  const submitSendHandler = async (event) => {
     event.preventDefault();
     const currentTime = new Date().toLocaleString();
     const emailContent = editorState.getCurrentContent().getPlainText();
-    //console.log(emailContent);
-    //console.log(currentTime);
-    const MailEmail = email.replace("@", "").replace(".", "");
+    const sendEmail = email.replace("@", "").replace(".", "");
     const visibility = true;
 
-    fetch(
-      `https://mail-bo-default-rtdb.firebaseio.com/Send Email/${MailEmail}.json`,
-      {
-        method: "POST",
-        body: JSON.stringify({
-          email: recemail,
-          subject: subject,
-          content: emailContent,
-          time: currentTime,
-          visibility:visibility
-        }),
-        headers: { "Content-Type": "application/json" },
-      }
-    );
+    const sendData = {
+      email: toEmail,
+      subject: subject,
+      content: emailContent,
+      time: currentTime,
+      visibility: visibility
+    };
 
-    const ResiveEmail = recemail.replace("@", "").replace(".", "");
+    try {
+      await fetch(
+        `https://mail-bo-default-rtdb.firebaseio.com/send/${sendEmail}.json`,
+        {
+          method: "POST",
+          body: JSON.stringify(sendData),
+          headers: { "Content-Type": "application/json" },
+        }
+      );
 
-    fetch(
-      `https://mail-bo-default-rtdb.firebaseio.com/Resive Email/${ResiveEmail}.json`,
-      {
-        method: "POST",
-        body: JSON.stringify({
-          email: email,
-          subject: subject,
-          content: emailContent,
-          time: currentTime,
-          visibility:visibility
-        }),
+      const receiveEmail = toEmail.replace("@", "").replace(".", "");
+      localStorage.setItem('toEmail',toEmail);
 
-        headers: { "Content-Type": "application/json" },
-      }
-    );
-    setRecEmail("");
-    setSubject("");
-    setEditorState(EditorState.createEmpty());
+      const receiveData = {
+        email: email,
+        subject: subject,
+        content: emailContent,
+        time: currentTime,
+        visibility: visibility
+      };
+
+      await fetch(
+        `https://mail-bo-default-rtdb.firebaseio.com/receive/${receiveEmail}.json`,
+        {
+          method: "POST",
+          body: JSON.stringify(receiveData),
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+
+      localStorage.setItem('toEmail', toEmail);
+      setToEmail("");
+      setSubject("");
+      setEditorState(EditorState.createEmpty());
+
+      toast.success('Sent Successfully', {
+        position: "bottom-right",
+        closeOnClick: true,
+        pauseOnHover: false,
+        theme: "colored",
+        autoClose: 2000
+      });
+    } catch (error) {
+      console.error("Error sending email:", error);
+    }
   };
 
   const onEmailStateChange = (event) => {
-    setRecEmail(event.target.value);
+    setToEmail(event.target.value);
   };
 
   const onSubjectStateChange = (event) => {
@@ -72,6 +91,7 @@ const Home = () => {
   const onEditorStateChange = (newEditorState) => {
     setEditorState(newEditorState);
   };
+
   return (
     <>
       <div className="home-container">
@@ -85,7 +105,7 @@ const Home = () => {
               <Form.Control
                 type="email"
                 id="to"
-                value={recemail}
+                value={toEmail}
                 onChange={onEmailStateChange}
                 placeholder="charan@gmail.com"
                 required
@@ -112,7 +132,7 @@ const Home = () => {
               />
             </Form.Group>
             <Button variant="dark" type="submit">
-              Send
+              Send <SendIcon />
             </Button>
           </Form>
         </div>
