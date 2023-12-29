@@ -98,7 +98,7 @@ const SentMail = () => {
       </h5>
 
       {mail.map((data) => (
-        <ListGroup style={{ margin: " 5px 2rem", border: "1px solid black" , backgroundColor:'gray' }}>
+        <ListGroup style={{ marginLeft:'15rem',marginRight:'20rem',marginTop:'5px', border: "1px solid black" , backgroundColor:'gray' }}>
           <ListGroupItem
             onClick={() => openSentMail(data.id)}
             key={data.id}
@@ -109,14 +109,15 @@ const SentMail = () => {
             <PersonIcon />
             <strong style={{ margin: "1rem" }}>To: {data.email}</strong>
             <span>{data.time}</span>
-          </ListGroupItem>
 
-          <DeleteOutlineIcon
-             
-            onClick={() => deleteMessage(data.id)}
-            style={{ cursor: "pointer", color: "red",margin:'15px' }}
-          /> 
-        </ListGroup>
+            <DeleteOutlineIcon
+             onClick={() => deleteMessage(data.id)}
+             style={{ cursor: "pointer", color: "red", marginLeft:'1rem'}}
+           />   
+
+
+          </ListGroupItem>
+         </ListGroup>
       ))}
     </div>
   );

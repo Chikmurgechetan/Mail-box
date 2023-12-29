@@ -110,7 +110,7 @@ const Inbox = () => {
         }}
       >
         <InboxOutlined style={{margin:'10px'}}  />
-         Welcome to Inbox
+          Welcome to Inbox
          <InboxOutlined style={{margin:'10px'}}/>
          
       </h2>
@@ -134,11 +134,16 @@ const Inbox = () => {
               {item.visibility && <BlueDot />}
               BY: {item.email}----{item.subject}------
               {item.time}
-            </ListGroupItem>
-            <DeleteIcon
+
+
+              <DeleteIcon
               onClick={() => deleteMessage(item.id)}
-              style={{ cursor: "pointer", color: "black", margin: "1rem" }}
+              style={{ cursor: "pointer", color: "black", marginLeft:'1rem' }}
+
             />
+
+            </ListGroupItem>
+            
           </ListGroup>
         ))}
       </div>
