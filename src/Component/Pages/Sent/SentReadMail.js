@@ -38,7 +38,7 @@ const SentMailRead = () => {
     <Container>
       <Row>
         <Col>
-          <Card style={{ padding: "40px", margin: "40px" }}>
+          <Card style={{ padding: "40px", margin: "40px" ,border:'2px solid yellow'}}>
             <AccountCircleIcon />
             <Card.Title>From:- {email}</Card.Title>
             {message.subject && (

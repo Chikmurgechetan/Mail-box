@@ -10,9 +10,11 @@ import DeleteIcon from "@mui/icons-material/Delete";
 const Inbox = () => {
   const [data, setData] = useState([]);
   const navigate = useNavigate();
+
   const email = localStorage.getItem("email");
   const receiveEmail = email.replace("@", "").replace(".", "");
 
+  console.log(receiveEmail);
   // Add a state variable to keep track of unread message count
   const [unreadCount, setUnreadCount] = useState(0);
 
@@ -100,31 +102,42 @@ const Inbox = () => {
 
   return (
     <div>
-      <h2 style={{ margin: "0 20rem" }}>
-        <InboxOutlined />
-        Welcome to Inbox
-        <InboxOutlined />
+      <h2
+        style={{
+          margin: "0 20rem",
+          color: "white",
+          textDecoration: " transparent",
+        }}
+      >
+        <InboxOutlined style={{margin:'10px'}}  />
+         Welcome to Inbox
+         <InboxOutlined style={{margin:'10px'}}/>
+         
       </h2>
       <div style={{ border: "1px solid black", padding: "10px 200px" }}>
-        <p style={{ textDecoration: "underline red" }}>
+        <p style={{ textDecoration: "underline red", color: "white" }}>
           Unread Messages: ({unreadCount})
         </p>
         {data.map((item, index) => (
           <ListGroup
             key={index}
-            style={{ margin: "4px", border: "1px solid black" }}
+            style={{
+              margin: "4px",
+              border: "1px solid black",
+              backgroundColor: "gray",
+            }}
           >
             <ListGroupItem
               onClick={() => openReadPage(item.id)}
-              style={{ cursor: "pointer" }}
-            >
+              style={{ cursor: "pointer", fontWeight: "bold" }}>
+
               {item.visibility && <BlueDot />}
-              BY: {item.email}----{item.subject}---------
+              BY: {item.email}----{item.subject}------
               {item.time}
             </ListGroupItem>
             <DeleteIcon
               onClick={() => deleteMessage(item.id)}
-              style={{ cursor: "pointer", color: "black" }}
+              style={{ cursor: "pointer", color: "black", margin: "1rem" }}
             />
           </ListGroup>
         ))}

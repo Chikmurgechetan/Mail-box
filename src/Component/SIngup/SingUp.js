@@ -1,29 +1,29 @@
 import React, { useContext, useState } from "react";
 import "./SIngUp.css";
-
 import { Container, Button, Form } from "react-bootstrap";
 import { AuthoContext } from "../store/AuthoContext";
 import { useNavigate } from "react-router";
 
 const SingUp = () => {
   const ctx = useContext(AuthoContext);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [conformPassword, setConformPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [isLogin, setIsLogine] = useState(true);
   const navigate = useNavigate();
 
   const switchHandler = () => {
     setIsLogine((prevState) => !prevState);
   };
+ 
+  localStorage.setItem("email", email);
 
   const submitSinguupHandler = async (event) => {
     event.preventDefault();
-    console.log(email, password, conformPassword);
+    console.log(email, password, confirmPassword);
 
-    localStorage.setItem('email',email);
-
-    if (!isLogin && password !== conformPassword) {
+    if (!isLogin && password !== confirmPassword) {
       alert("Confirmation password does not match");
       return;
     }
@@ -55,12 +55,11 @@ const SingUp = () => {
       } else {
         if (isLogin) {
           ctx.setIdToken(data.idToken);
-          localStorage.setItem('email',data.email);
           navigate("/home");
         }
         setIsLogine(true);
       }
-      console.log(data);
+      //  console.log(data);
     } catch (error) {
       alert("An error occurred. Please try again.");
     }
@@ -68,7 +67,7 @@ const SingUp = () => {
 
   const changeEmail = (event) => {
     setEmail(event.target.value);
-  
+   
   };
 
   const changePassword = (event) => {
@@ -76,7 +75,7 @@ const SingUp = () => {
   };
 
   const changeConformPass = (event) => {
-    setConformPassword(event.target.value);
+    setConfirmPassword(event.target.value);
   };
 
   return (
@@ -107,7 +106,7 @@ const SingUp = () => {
               <Form.Label>Conform Possword</Form.Label>
               <Form.Control
                 type="password"
-                value={conformPassword}
+                value={confirmPassword}
                 onChange={changeConformPass}
                 required
               />

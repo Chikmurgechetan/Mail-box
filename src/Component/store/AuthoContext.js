@@ -1,43 +1,41 @@
 import React, { useState } from "react";
 
 export const AuthoContext = React.createContext({
-    idToken:'',
-    isLogine: false,
-    setIdToken: () =>{},
-    logOut : () =>{}
-})
+  idToken: "",
+  isLogine: false,
+  setIdToken: () => {},
+  logOut: () => {},
+});
 
-const ContextProvider = (props) =>{
- 
-const initialToken = localStorage.getItem("idToken");
+const ContextProvider = (props) => {
+  const initialToken = localStorage.getItem("idToken");
 
-  const [idToken,setIdToken] = useState(initialToken);
-  
+  const [idToken, setIdToken] = useState(initialToken);
+
   const userIsLoggedIn = !!idToken;
-   
-    const loginHandler = (idToken)=>{
-        setIdToken(idToken);
-        localStorage.setItem("idToken", idToken);
-    }
 
-    const logOutHandler = () =>{
-        setIdToken(null);
-       localStorage.removeItem("idToken");
-      // localStorage.removeItem("email");
-    }
+  const loginHandler = (idToken) => {
+    setIdToken(idToken);
+    localStorage.setItem("idToken", idToken);
+  };
 
-    const ctxValue = {
-        idToken:idToken,
-        isLogine: userIsLoggedIn,
-        setIdToken:loginHandler ,
-        logOut : logOutHandler
-    }
+  const logOutHandler = () => {
+    setIdToken(null);
+    localStorage.removeItem("idToken");
+  };
 
-    return(
-        <AuthoContext.Provider value={ ctxValue }>
-            {props.children}
-        </AuthoContext.Provider>
-    )
+  const ctxValue = {
+    idToken: idToken,
+    isLogine: userIsLoggedIn,
+    setIdToken: loginHandler,
+    logOut: logOutHandler,
+  };
+
+  return (
+    <AuthoContext.Provider value={ctxValue}>
+      {props.children}
+    </AuthoContext.Provider>
+  );
 };
 
 export default ContextProvider;

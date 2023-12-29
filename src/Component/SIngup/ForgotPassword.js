@@ -6,7 +6,7 @@ const ForgotPassword = () => {
   const navigat = useNavigate();
   const [email, setEmail] = useState("");
 
-  const resetSubmitHandler = async (event) => {
+  const passwordRestHandler = async (event) => {
     event.preventDefault();
     try {
       const response = await fetch(
@@ -23,12 +23,12 @@ const ForgotPassword = () => {
         }
       );
       const data = await response.json();
-      console.log(data);
-      if (response.ok) {
+
+      if (data.error) {
+        alert(data.error.message);
+      } else {
         alert("A Password reset link has been sent to your email");
         navigat("/");
-      } else {
-        throw new Error("Sending password reset email failed");
       }
     } catch (error) {
       console.log(error);
@@ -45,9 +45,9 @@ const ForgotPassword = () => {
         Change Password
       </h3>
       <Container>
-        <Form onSubmit={resetSubmitHandler} style={{ maxWidth: "400px" }}>
+        <Form onSubmit={passwordRestHandler} style={{ maxWidth: "400px" }}>
           <Form.Group>
-            <Form.Label htmlFor="email">Email</Form.Label>
+            <Form.Label htmlFor="email">Register Email</Form.Label>
             <Form.Control
               type="email"
               id="email"

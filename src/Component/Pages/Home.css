@@ -29,6 +29,8 @@
 
 .Hed {
   text-decoration: underline red;
+  color: white;
+  text-decoration: transparent;
 }
 
 .editor {

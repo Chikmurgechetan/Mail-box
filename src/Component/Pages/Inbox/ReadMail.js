@@ -21,11 +21,11 @@ const ReadMail = () => {
         );
         const data = await response.json();
 
-        if (!response.ok) {
-          throw new Error(data.error);
+        if(data.error){
+          console.log(data.error);
+        } else {
+          setMessage(data);
         }
-        setMessage(data);
-        console.log(data);
       } catch (error) {
         alert(error.message);
       }
@@ -38,9 +38,9 @@ const ReadMail = () => {
     <Container>
       <Row>
         <Col>
-          <Card style={{ padding: "40px", margin: "40px" }}>
+          <Card style={{ padding: "40px", margin: "40px",border:'2px solid yellow' }}>
             <AccountCircleIcon />
-            <Card.Title>TO:- {email}</Card.Title>
+            <Card.Title>To:- {email}</Card.Title>
             {message.subject && (
               <>
                 <Card.Title>From :- {message.email}</Card.Title>

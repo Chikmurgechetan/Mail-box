@@ -29,14 +29,14 @@ const Header = () => {
       >
         <Navbar.Brand style={{textDecoration:'underline red'}}><MailIcon/> Mail Box Client <MailIcon/> </Navbar.Brand>
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="mx-auto">
+          <Nav className="mx-auto" >
             <Link
               to="/home"
               style={{
                 textDecoration: "none",
                 fontSize: "1.4rem",
                 color: "yellow",
-                marginRight:'10px'
+                marginRight:'25px'
               }}
             >
               Compose
@@ -48,7 +48,7 @@ const Header = () => {
                 textDecoration: "none",
                 fontSize: "1.4rem",
                 color: "white",
-                marginRight:'10px'
+                marginRight:'20px'
               }}
             >
               <AllInboxIcon/>

@@ -5,24 +5,25 @@ import { Editor } from "react-draft-wysiwyg";
 import { EditorState } from "draft-js";
 import { Button, Form } from "react-bootstrap";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
-import SendIcon from '@mui/icons-material/Send';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css'; // Don't forget to import the CSS as well
-
-
+import SendIcon from "@mui/icons-material/Send";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Home = () => {
   const [toEmail, setToEmail] = useState("");
   const [subject, setSubject] = useState("");
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
 
-  const email = localStorage.getItem("email");
-
   const submitSendHandler = async (event) => {
     event.preventDefault();
+
+    const email = localStorage.getItem("email");
+    console.log(email);
+
     const currentTime = new Date().toLocaleString();
     const emailContent = editorState.getCurrentContent().getPlainText();
     const sendEmail = email.replace("@", "").replace(".", "");
+    console.log(sendEmail);
     const visibility = true;
 
     const sendData = {
@@ -30,11 +31,11 @@ const Home = () => {
       subject: subject,
       content: emailContent,
       time: currentTime,
-      visibility: visibility
+      visibility: visibility,
     };
 
     try {
-      await fetch(
+      const response = await fetch(
         `https://mail-bo-default-rtdb.firebaseio.com/send/${sendEmail}.json`,
         {
           method: "POST",
@@ -43,18 +44,29 @@ const Home = () => {
         }
       );
 
-      const receiveEmail = toEmail.replace("@", "").replace(".", "");
-      localStorage.setItem('toEmail',toEmail);
+      const data = await response.json();
+      if (data.error) {
+        alert(data.error.message);
+      } else {
+        alert("Succesefully Send Mail");
+      }
+    } catch (error) {
+      console.log(error);
+    }
 
-      const receiveData = {
-        email: email,
-        subject: subject,
-        content: emailContent,
-        time: currentTime,
-        visibility: visibility
-      };
+    const receiveEmail = toEmail.replace("@", "").replace(".", "");
+    localStorage.setItem("toEmail", toEmail);
 
-      await fetch(
+    const receiveData = {
+      email: email,
+      subject: subject,
+      content: emailContent,
+      time: currentTime,
+      visibility: visibility,
+    };
+
+    try {
+      const response = await fetch(
         `https://mail-bo-default-rtdb.firebaseio.com/receive/${receiveEmail}.json`,
         {
           method: "POST",
@@ -62,22 +74,28 @@ const Home = () => {
           headers: { "Content-Type": "application/json" },
         }
       );
-
-      localStorage.setItem('toEmail', toEmail);
-      setToEmail("");
-      setSubject("");
-      setEditorState(EditorState.createEmpty());
-
-      toast.success('Sent Successfully', {
-        position: "bottom-right",
-        closeOnClick: true,
-        pauseOnHover: false,
-        theme: "colored",
-        autoClose: 2000
-      });
+      const data = await response.json();
+      if (data.error) {
+        alert(data.error.message);
+      } else {
+        console.log("succesfull send mail");
+      }
     } catch (error) {
-      console.error("Error sending email:", error);
+      console.log(error);
     }
+
+    localStorage.setItem("toEmail", toEmail);
+    setToEmail("");
+    setSubject("");
+    setEditorState(EditorState.createEmpty());
+
+    toast.success("Sent Successfully", {
+      position: "bottom-right",
+      closeOnClick: true,
+      pauseOnHover: false,
+      theme: "colored",
+      autoClose: 2000,
+    });
   };
 
   const onEmailStateChange = (event) => {

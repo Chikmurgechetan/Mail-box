@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Container, ListGroup, ListGroupItem } from "react-bootstrap";
+import {  ListGroup, ListGroupItem } from "react-bootstrap";
 import PersonIcon from "@mui/icons-material/Person";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { useNavigate } from "react-router-dom";
@@ -89,15 +89,16 @@ const SentMail = () => {
         className="mt-3"
         style={{
           textAlign: "center",
-          textDecoration: "underline",
-          color: "red",
+          textDecoration: "transperant",
+          fontWeight:'bold',
+          color: "white",
         }}
       >
-        Sent Box
+        SENT BOX
       </h5>
 
       {mail.map((data) => (
-        <ListGroup style={{ margin: " 5px 4rem", border: "1px solid black" }}>
+        <ListGroup style={{ margin: " 5px 2rem", border: "1px solid black" , backgroundColor:'gray' }}>
           <ListGroupItem
             onClick={() => openSentMail(data.id)}
             key={data.id}
@@ -106,14 +107,15 @@ const SentMail = () => {
             }}
           >
             <PersonIcon />
-            <strong style={{ marginRight: "1rem" }}>To: {data.email}</strong>
+            <strong style={{ margin: "1rem" }}>To: {data.email}</strong>
             <span>{data.time}</span>
           </ListGroupItem>
 
           <DeleteOutlineIcon
+             
             onClick={() => deleteMessage(data.id)}
-            style={{ cursor: "pointer", color: "red" }}
-          />
+            style={{ cursor: "pointer", color: "red",margin:'15px' }}
+          /> 
         </ListGroup>
       ))}
     </div>
